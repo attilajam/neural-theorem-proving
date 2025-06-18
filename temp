@@ -1,0 +1,32 @@
+
+def tactic_suggest(theorem, goal):
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(
+        api_key=os.environ.get("GEMINI_API_KEY"),
+    )
+
+    model = "gemini-1.5-flash"
+    contents = [
+        types.Content(
+            role="user",
+            parts=[
+                types.Part.from_text(text=f"Give a single tactic to continue proving the theorem {theorem} in Lean 4 with the goal state being: {goal}. Format your output as just plain text, don't use markdown code blocks or etc."),
+            ],
+        ),
+    ]
+    generate_content_config = types.GenerateContentConfig(
+        response_mime_type="text/plain",
+    )
+
+    output = ""
+    for chunk in client.models.generate_content_stream(
+        model=model,
+        contents=contents,
+        config=generate_content_config,
+    ):
+        output += str(chunk.text)
+
+
+    return output
