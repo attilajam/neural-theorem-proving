@@ -1,0 +1,17 @@
+You are proving a theorem in Lean 4.
+You are given the following information:
+- The theorem you are proving, inside [THM]...[/THM]
+- The current proof state, inside [STATE]...[/STATE]
+- The previous tactics that were used to get to that state if any, inside [TAC]...[/TAC]
+Your task is to generate the next tactic in the proof. Provide just a single tactic, for example:
+[STATE]⊢ ∀ n > 0, 5 ^ n > n.factorial ↔ n ≤ 11[/STATE]
+[TAC]
+intro n hn_pos
+apply Iff.intro
+intro h_pow_gt_fact
+[/TAC]
+
+You would output:
+contrapose! h_pow_gt_fact
+
+No markdown styling like (` around the code `), a single line of Lean 4 code, with only one tactic to run. 
