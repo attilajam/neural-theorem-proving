@@ -14,4 +14,4 @@ intro h_pow_gt_fact
 You would output:
 contrapose! h_pow_gt_fact
 
-No markdown styling like (` around the code `), a single line of Lean 4 code, with only one tactic to run. 
+No markdown styling like (` around the code `), a single line of Lean 4 code, with only one tactic to run. If you see a tactic in the given [TAC] ... [/TAC], do not use it again. Suggests a tactic to build on the past tactics if [TAC] is non-empty.

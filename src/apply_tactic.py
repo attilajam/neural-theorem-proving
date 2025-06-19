@@ -37,23 +37,26 @@ class ProofState:
             tactic = suggest_tactic(model, prompt("\n\n".join(goals), self.tactics, self.theorem))
             if verbose:
                 print(f"suggested tactic={tactic}")
-            self.tactics.append(tactic)
+            print("\n".join(self.tactics))
             goals, messages, proof_status = self.apply_tactic(tactic)
             if verbose:
-                print(f"after applying tactic, goals={goals}, messages={messages}")
+                print(f"after applying tactic={tactic}, messages={messages}")
             if messages == "error" or messages:
                 print(messages)
                 for i in range(retries):
                     tactic = suggest_tactic(model, fix_prompt(self.initial_goal, self.tactics, self.theorem, messages))
-                    self.tactics.pop()
-                    self.tactics.append(tactic)
                     goals, messages, proof_status = self.apply_tactic(tactic)
                     print(messages)
-                if not messages or messages == "error" or goals == "error":
+                if not messages:
+                    self.tactics.append(tactic)
+                else:
+                    self.tactics.append(f"Failed tactic: {tactic}")
                     break
+            else:
+                self.tactics.append(tactic)
         if proof_status == "Completed":
-            return "Success!", "\n".join(self.tactics)
-        return "Failed!", self.response
+            return "Success!", self.tactics
+        return "Failed!", self.tactics
 
 
 if __name__ == "__main__":

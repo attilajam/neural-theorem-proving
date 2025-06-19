@@ -1,4 +1,5 @@
 prompt = lambda goal, tactics, theorem: f"""
+Here is the given state information, your task is to provide the next tactic.
 [THM]
 {theorem}
 [/THM]
